@@ -1,0 +1,5 @@
+AuthType WebAuth
+Require valid-user
+# Set the default handler.
+DirectoryIndex index.php
+

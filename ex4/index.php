@@ -5,56 +5,53 @@ function __autoload($classname) {
   include_once($classpath);
 }
 
-//create an array to store our Article and SeriesArticle objects
-$articles = array();
-$title = "Bacon";
-$body = "Bacon ipsum dolor sit amet brisket kielbasa boudin tail, pastrami tongue corned beef turkey swine ham sirloin rump. Short ribs meatball tenderloin tongue venison jowl. Venison sirloin capicola beef hamburger. Pork meatloaf chuck, short ribs drumstick frankfurter beef ribs corned beef prosciutto salami leberkas shank cow boudin. Ribeye chuck tail beef jowl frankfurter, shank leberkas boudin tri-tip short loin andouille venison. Rump drumstick tongue, sausage short loin chicken pork belly ground round. Bresaola meatball ham filet mignon leberkas turducken biltong ham hock jerky short loin bacon chicken sirloin.";
-$series = 1;
-//create a new SeriesArticle object
-$articles[] = new SeriesArticle($title, $body, $series);
-$title = "Ribeye";
-$body = "Ribeye jowl ham rump tri-tip t-bone. Capicola ham hock chicken t-bone drumstick, flank prosciutto salami ribeye tri-tip corned beef hamburger venison. Tail jerky biltong, beef pig meatloaf shank drumstick frankfurter pork chop flank pastrami filet mignon short loin jowl. Venison brisket sausage, turducken filet mignon ham hock flank shoulder short ribs tongue tri-tip.";
-$series = 1;
-//create a new SeriesArticle object
-$articles[] = new SeriesArticle($title, $body, $series);
-$title = "Spare ribs";
-$body = "Spare ribs turkey corned beef, chicken pork chop sirloin ball tip andouille ham pancetta tongue beef rump. Tail flank sausage, pork spare ribs sirloin turducken tenderloin. Jerky hamburger andouille, bacon biltong swine meatball short ribs ground round spare ribs. Meatball pork loin boudin pork chop frankfurter ground round hamburger turkey prosciutto rump pork belly.";
-$series = "A";
-//create a new SeriesArticle object
-$articles[] = new SeriesArticle($title, $body, $series);
-$title = "Chuck";
-$body = "Chuck boudin swine, ribeye filet mignon salami venison kielbasa. Flank frankfurter boudin, short ribs pig chuck prosciutto. Chicken shankle prosciutto jowl. Cow short loin frankfurter biltong. Chicken shankle brisket venison. T-bone fatback ham ball tip, filet mignon tenderloin ham hock beef ribs chicken tri-tip chuck. Ball tip turkey tri-tip beef bacon filet mignon frankfurter pork chop hamburger shoulder jerky pork belly drumstick.";
-//create a new Article object
-$articles[] = new Article($title, $body);
-
-//create an array to hold the return values of the getSeries() method
-$series_collection = array();
-foreach ($articles as $article) {
-  //check if it is of the SeriesArticle class
-  if ($article instanceOf SeriesArticle) {
-    //use the getSeries() method
-    $series_collection[] = $article->getSeries();
-  }
+if(!empty($_POST['series'])){
+  $article = new SeriesArticle($_POST['title'], $_POST['body'], $_POST['series']);
+  $title = $article->title;
+  $excerpt = '<h2>Excerpt</h2>';
+  $excerpt .= '<p>' . $article->getExcerpt() . '</p><p>(<strong>For the lulz, this is what your article body text looks like when it gets truncated by a lazy developer</strong>)</p>';
+  echo $excerpt;
+  $body = '<h2>Body</h2>';
+  $body .= '<p>' . $article->getBody() . '</p>';
+  echo $body;
+  $series = '<h2>Series</h2>';
+  $series .= '<p>' . $article->getSeries() . '</p>';
+  echo $series;
+  $created = '<h2>Date Created</h2>';
+  $created .= '<p>' . $article->getCreated() . '</p>';
+  echo $created;
 }
-
+elseif(!empty($_POST)){
+  $article = new SeriesArticle($_POST['title'], $_POST['body'], $_POST['series']);
+  $excerpt = '<h2>Excerpt</h2>';
+  $excerpt .= '<p>' . $article->getExcerpt() . ' <strong>&lt;--for the lulz, this is what your article body text looks like when it gets truncated by a lazy developer</strong></p>';
+  echo $excerpt;
+  $body = '<h2>Body</h2>';
+  $body .= '<p>' . $article->getBody() . '</p>';
+  echo $body;
+}
 ?>
 <html>
 <head>
-<title>Exercise 3: Extending Classes</title>
+<title>Exercise 4: Exceptions</title>
 <link rel="stylesheet" type="text/css" href="style.css" media="all" />
 <head>
 <body>
 
-<h2>Articles</h2>
-<pre>
-<?php var_dump($articles); ?>
-</pre>
 
-<h2>Series Articles</h2>
-<pre>
-<?php var_dump($series_collection); ?>
-</pre>
-?>
+<form method="post" id="dateform" action="index.php">
+  <label for="title">Title</label>
+    <input type="text" name="title" size="75" />
+    <br />
+  <label for="body">Body</label>
+    <textarea name="body" rows="10" cols="75">
+    </textarea>
+    <br />
+  <label for="series">Series</label>
+    <input type="text" name="series" size="2" />
+    <p>Enter the series number. <strong>Only numeric values are allowed.</strong></p>
+    <input type="submit" value="Submit" />
+</form>
 
 </body>
 </html>
